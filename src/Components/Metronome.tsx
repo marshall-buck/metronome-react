@@ -1,21 +1,21 @@
 import AudioControlPanel from "./AudioControlPanel";
 import PadController from "./PadController";
 import { mn } from "../models/metronome";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Metronome() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {});
   function handleStart(e: React.SyntheticEvent<HTMLButtonElement>) {
     mn.start();
-    setIsPlaying(!isPlaying);
+
     if (mn.isPlaying) {
-      mn.scheduler();
-      // startAnimation
+      mn.scheduler(); // kick off scheduling
+
+      setIsAnimating(true);
     } else {
       mn.reset();
-      // cancelAnimationFrame(anF);
+      setIsAnimating(false);
     }
   }
   /** Changes Volume of metronome */
@@ -56,7 +56,7 @@ function Metronome() {
         <option value="sixteenth">sixteenth</option>
         <option value="trips">trips</option>
       </select>
-      <PadController />
+      <PadController numberPads={4} isAnimating={isAnimating} />
     </div>
   );
 }

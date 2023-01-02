@@ -1,14 +1,20 @@
+
 .beat {
-    width: 100px;
-    height: 100px;
-    background-color: black;
+  width: 100px;
+  height: 100px;
+  background-color: black;
 
 
 
-  }
+}
 
-  .beat.active {
-    background-color:rgb(222, 150, 56);
-    font-size: 2rem;
+.beat.active {
+  background-color:rgb(222, 150, 56);
+  font-size: 2rem;
+  color: white;
+}
+
+  /* p {
     color: white;
-  }
+    font-size: 4rem;
+  } */

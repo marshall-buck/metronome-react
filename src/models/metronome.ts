@@ -170,7 +170,7 @@ class Metronome {
       currentBeat: this.currentBeat,
       nextNoteTime: this.nextNoteTime,
     });
-    console.log("scheduleNote after push", this.notesInQueue);
+    // console.log("scheduleNote after push", this.notesInQueue);
 
     this.playTone(this.nextNoteTime);
   }
@@ -202,7 +202,7 @@ class Metronome {
    */
   public shouldDrawNote(): boolean | number {
     let drawNote = this.lastNoteDrawn;
-    console.log("shouldDrawNote before loop", this.notesInQueue);
+    // console.log("shouldDrawNote before loop", this.notesInQueue);
 
     while (
       this.notesInQueue.length &&

@@ -30,7 +30,7 @@ function AudioControlPanel({
         <AudioControl key={e.type} {...e} />
       ))} */}
       <AudioControl {...masterVolume} handleValueChange={changeMasterVolume} />
-      <AudioControl {...tempoControl} handleValueChange={changeMasterVolume} />
+      <AudioControl {...tempoControl} handleValueChange={changeTempo} />
     </div>
   );
 }
