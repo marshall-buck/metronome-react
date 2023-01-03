@@ -1,4 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Pad from "./Pad";
 import "./PadController.css";
 import { mn } from "../models/metronome";
@@ -9,52 +15,27 @@ interface PadControllerPropsI {
 
 function PadController({ isAnimating, numberPads }: PadControllerPropsI) {
   const anF = useRef<number | null>();
-  const [drawNote, setDrawNote] = useState<number | boolean>(
-    mn.shouldDrawNote()
-  );
+  const [drawNote, setDrawNote] = useState<number | boolean>(false);
 
-  // const drawNote = useRef<number | boolean>(mn.shouldDrawNote());
-  // const [isActive, setIsActive] =  useState(false)
-  useLayoutEffect(() => {
+  /** turns on and removes anF when isAnimating changes */
+  useEffect(() => {
     if (isAnimating) anF.current = requestAnimationFrame(animatePads);
 
     return () => cancelAnimationFrame(anF.current as number);
   }, [isAnimating]);
 
+  /** Animation frame function. this will check when there is a new note
+   * to be drawn and set state of new note,a nd re-render the pad container
+   */
   function animatePads() {
-    // drawNote.current = mn.shouldDrawNote();
-
-    setDrawNote(mn.shouldDrawNote());
-    // console.log(drawNote);
-    // const drawNote = mn.shouldDrawNote();
-    // console.log(drawNote);
-
-    // const pads = document.querySelectorAll(".beat");
-    // if (drawNote !== false) {
-    //   pads.forEach((pad, idx) => {
-    //     //  To highlight beat every n beats drawNote/ n
-    //     // idx === drawNote / 2 will act like eight notes, must
-    //     //  also set time sig beats to 8
-
-    //     if (idx === (drawNote as number) / mn.drawBeatModifier) {
-    //       pad.classList.toggle("active");
-    //     } else pad.setAttribute("class", "beat");
-    //   });
-    // }
-    // Set up to draw again
+    const beat = mn.shouldDrawNote();
+    if (beat !== false) {
+      setDrawNote(beat);
+    }
     anF.current = requestAnimationFrame(animatePads);
-    // anF = requestAnimationFrame(animatePads);
   }
 
   const padsArray = Array.from({ length: numberPads }, (_, idx) => {
-    // if (drawNote === false) return;
-    // console.log(drawNote);
-    // let isActive = false;
-    // if (idx === (drawNote as number) / mn.drawBeatModifier) {
-    //   isActive = true;
-    // }
-    // console.log("rerender 3heades");
-
     return (
       <Pad key={idx} drawNote={drawNote} isAnimating={isAnimating} idx={idx} />
     );

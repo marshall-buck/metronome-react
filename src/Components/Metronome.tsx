@@ -5,6 +5,7 @@ import { useState } from "react";
 
 function Metronome() {
   const [isAnimating, setIsAnimating] = useState(false);
+  const [beats, setBeats] = useState(4);
 
   function handleStart(e: React.SyntheticEvent<HTMLButtonElement>) {
     mn.start();
@@ -31,6 +32,21 @@ function Metronome() {
     mn.tempo = tempo;
   }
 
+  /**handles subdivision change */
+  function handleSubdivisions(e: React.SyntheticEvent<HTMLSelectElement>) {
+    const target = e.target as HTMLSelectElement;
+
+    mn.beatsToPlay(target.value);
+  }
+  /**handles time sig change */
+  function handleTimeSig(e: React.SyntheticEvent<HTMLSelectElement>) {
+    const target = e.target as HTMLSelectElement;
+
+    mn.timeSig = target.value;
+    const newBeats = mn.timeSig;
+    setBeats(newBeats.beats);
+  }
+
   return (
     <div>
       <AudioControlPanel
@@ -40,7 +56,7 @@ function Metronome() {
       <button onClick={handleStart} id="start">
         {!mn.isPlaying ? "start" : "pause"}
       </button>
-      <select id="time-sig">
+      <select onChange={handleTimeSig} id="time-sig">
         <option value="1">4/4</option>
         <option value="0">3/4</option>
         <option value="2">5/4</option>
@@ -50,13 +66,13 @@ function Metronome() {
         <option value="6">9/8</option>
         <option value="7">12/8</option>
       </select>
-      <select id="subdivisions">
+      <select onChange={handleSubdivisions} id="subdivisions">
         <option value="quarter">quarter</option>
         <option value="eighth">eighth</option>
         <option value="sixteenth">sixteenth</option>
         <option value="trips">trips</option>
       </select>
-      <PadController numberPads={4} isAnimating={isAnimating} />
+      <PadController numberPads={beats} isAnimating={isAnimating} />
     </div>
   );
 }

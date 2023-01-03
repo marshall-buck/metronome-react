@@ -26,9 +26,6 @@ function AudioControlPanel({
 }: AudioControlPanelPropsI) {
   return (
     <div>
-      {/* {sliders.map((e) => (
-        <AudioControl key={e.type} {...e} />
-      ))} */}
       <AudioControl {...masterVolume} handleValueChange={changeMasterVolume} />
       <AudioControl {...tempoControl} handleValueChange={changeTempo} />
     </div>
