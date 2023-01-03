@@ -38,7 +38,7 @@ function Metronome() {
 
     mn.beatsToPlay(target.value);
   }
-  /**handles time sig change */
+  /**handles time sig change, sets state to new beats per bar */
   function handleTimeSig(e: React.SyntheticEvent<HTMLSelectElement>) {
     const target = e.target as HTMLSelectElement;
 

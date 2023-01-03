@@ -1,4 +1,4 @@
-import {
+import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -34,10 +34,20 @@ function PadController({ isAnimating, numberPads }: PadControllerPropsI) {
     }
     anF.current = requestAnimationFrame(animatePads);
   }
+  /** do something when pad is onMouseDown */
+  function padClickHandler(idx: number) {
+    console.log(idx);
+  }
 
   const padsArray = Array.from({ length: numberPads }, (_, idx) => {
     return (
-      <Pad key={idx} drawNote={drawNote} isAnimating={isAnimating} idx={idx} />
+      <Pad
+        key={idx}
+        drawNote={drawNote}
+        isAnimating={isAnimating}
+        idx={idx}
+        padClickHandler={padClickHandler}
+      />
     );
   });
 

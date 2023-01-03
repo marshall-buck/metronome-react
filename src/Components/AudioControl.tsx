@@ -10,15 +10,17 @@ interface AudioControlPropsI {
   step: string;
   handleValueChange: (e: React.SyntheticEvent<HTMLInputElement>) => void;
 }
-
-function AudioControl({
-  type,
+/** Generic slider control
+ * props {
+ * type,
   value,
   min,
   max,
   step,
-  handleValueChange,
-}: AudioControlPropsI) {
+  handleValueChange,}
+ */
+function AudioControl(props: AudioControlPropsI) {
+  const { type, value, min, max, step, handleValueChange } = props;
   const [rangeValue, setValue] = useState(value);
 
   function changeValue(e: React.SyntheticEvent<HTMLInputElement>) {
@@ -50,4 +52,4 @@ function AudioControl({
 }
 
 export default AudioControl;
-export type { AudioControlPropsI };
+// export type { AudioControlPropsI };

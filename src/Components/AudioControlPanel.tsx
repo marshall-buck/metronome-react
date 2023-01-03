@@ -1,4 +1,4 @@
-import AudioControl, { AudioControlPropsI } from "./AudioControl";
+import AudioControl from "./AudioControl";
 
 const masterVolume = {
   type: "Master Volume",
