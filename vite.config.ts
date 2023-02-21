@@ -11,7 +11,7 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./src/setupTests.ts",
   },
-  // server: {
-  //   open: "google chrome",
-  // },
+  server: {
+    open: "google-chrome",
+  },
 });

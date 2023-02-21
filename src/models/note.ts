@@ -1,29 +1,10 @@
-import { VOLUME_SLIDER_RAMP_TIME, DEFAULT_VOLUME } from "./audioCtx";
-
-interface Frequency {
-  [key: string]: number;
-}
-
-const noteSymbols = { quarter: "♩", eighth: "♪", sixteenth: "U+E1D9" };
-//TODO: Abstract to Formula
-const FREQUENCIES: Frequency = {
-  C4: 261.63,
-  DB4: 277.18,
-  D4: 293.66,
-  EB4: 311.13,
-  E4: 329.63,
-  F4: 349.23,
-  GB4: 369.99,
-  G4: 392.0,
-  AB4: 415.3,
-  A4: 440.0,
-  BB4: 466.16,
-  B4: 493.88,
-  C5: 523.25,
-};
-// 440 * Math.pow(1.059463094359,12)
-const DEFAULT_FREQUENCY = 380;
-const DEFAULT_SOUND_LENGTH = 0.05;
+import {
+  VOLUME_SLIDER_RAMP_TIME,
+  DEFAULT_VOLUME,
+  DEFAULT_SOUND_LENGTH,
+  FREQUENCIES,
+  PITCH_BAR,
+} from "./config";
 
 /** Class representing a single note extends OscillatorNode Web Audio API */
 class Note extends OscillatorNode {
@@ -31,35 +12,18 @@ class Note extends OscillatorNode {
   gainNode: GainNode;
   soundLength: number = DEFAULT_SOUND_LENGTH;
   private _noteVolume: number = DEFAULT_VOLUME;
+  private _currentBeat: number = 0;
+  private _nextNoteTime: number;
 
   constructor(ctx: AudioContext, gainNode: GainNode) {
-    super(ctx, { frequency: DEFAULT_FREQUENCY, type: "triangle" });
+    super(ctx, { frequency: PITCH_BAR, type: "triangle" });
 
     this.ctx = ctx;
     this.gainNode = gainNode;
+
+    this._nextNoteTime = this.ctx.currentTime;
     this.connect(this.gainNode);
   }
-  /** Starts and stops a note. */
-  play(time: number): void {
-    this.start(time);
-    this.stop(time + this.soundLength);
-  }
-
-  /** Set the frequency to value at certain time */
-  setPitch(value: string | number, time: number = this.ctx.currentTime): void {
-    if (typeof value === "number") this.frequency.setValueAtTime(value, time);
-    else {
-      const upper = value.toUpperCase();
-      if (value[1] === "#" || !FREQUENCIES[upper]) {
-        throw new Error(
-          "Invalid pitch, Include only notes from C4 to C5, and no sharps only flats"
-        );
-      } else {
-        this.frequency.setValueAtTime(FREQUENCIES[upper], time);
-      }
-    }
-  }
-
   /**************GETTERS AND SETTERS*************************/
   /** Change note volume note volume */
   get noteVolume() {
@@ -70,6 +34,36 @@ class Note extends OscillatorNode {
       value,
       this.ctx.currentTime + VOLUME_SLIDER_RAMP_TIME
     );
+  }
+
+  /** Get and set currentBeat */
+  get currentBeat() {
+    return this._currentBeat;
+  }
+  set currentBeat(value: number) {
+    this._currentBeat = value;
+  }
+
+  /** Get and set _nextNoteTime */
+  get nextNoteTime() {
+    return this._nextNoteTime;
+  }
+  set nextNoteTime(value: number) {
+    this._nextNoteTime = value;
+  }
+
+  /** Starts and stops a note. */
+  play(time: number): void {
+    this.start(time);
+    this.stop(time + this.soundLength);
+  }
+
+  /** Set the frequency to value at certain time */
+  setPitch(value: string | number, time: number = this.ctx.currentTime): void {
+    if (typeof value === "number") this.frequency.setValueAtTime(value, time);
+    else {
+      throw new Error("frequency must be a number");
+    }
   }
 }
 
